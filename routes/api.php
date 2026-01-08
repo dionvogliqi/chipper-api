@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\UserFavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('posts/{post}/favorite', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('posts/{post}/favorite', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    Route::post('users/{user}/favorite', [UserFavoriteController::class, 'store'])->name('user-favorites.store');
+    Route::delete('users/{user}/favorite', [UserFavoriteController::class, 'destroy'])->name('user-favorites.destroy');
 });

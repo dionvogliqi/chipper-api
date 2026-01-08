@@ -25,11 +25,17 @@ class PostController extends Controller
     {
         $user = $request->user();
 
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('posts', 'public');
+        }
+
         // Create a new post
         $post = Post::create([
             'title' => $request->input('title'),
             'body' => $request->input('body'),
             'user_id' => $user->id,
+            'image' => $imagePath,
         ]);
 
         return new PostResource($post);

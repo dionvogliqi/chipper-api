@@ -7,6 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Models\Favorite;
+use App\Models\Post;
 
 class User extends Authenticatable
 {
@@ -53,5 +56,25 @@ class User extends Authenticatable
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function favoritedPosts(): MorphMany
+    {
+        return $this->morphMany(Favorite::class, 'favoritable')->where('favoritable_type', Post::class);
+    }
+
+    public function favoritedUsers(): MorphMany
+    {
+        return $this->morphMany(Favorite::class, 'favoritable')->where('favoritable_type', User::class);
+    }
+
+    public function followers(): MorphMany
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
+    public function getFollowers(): \Illuminate\Database\Eloquent\Collection
+    {
+        return User::whereIn('id', $this->followers()->pluck('user_id'))->get();
     }
 }
