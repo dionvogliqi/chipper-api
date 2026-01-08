@@ -67,4 +67,14 @@ class User extends Authenticatable
     {
         return $this->morphMany(Favorite::class, 'favoritable')->where('favoritable_type', User::class);
     }
+
+    public function followers(): MorphMany
+    {
+        return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
+    public function getFollowers(): \Illuminate\Database\Eloquent\Collection
+    {
+        return User::whereIn('id', $this->followers()->pluck('user_id'))->get();
+    }
 }
