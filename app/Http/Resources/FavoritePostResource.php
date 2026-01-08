@@ -5,13 +5,15 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FavoriteResource extends JsonResource
+class FavoritePostResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
         return [
-            'posts' => FavoritePostResource::collection($this->resource['posts']),
-            'users' => FavoriteUserResource::collection($this->resource['users']),
+            'id' => $this->id,
+            'title' => $this->title,
+            'body' => $this->body,
+            'user' => new FavoriteUserResource($this->user),
         ];
     }
 }

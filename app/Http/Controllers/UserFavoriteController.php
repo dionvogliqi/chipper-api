@@ -20,6 +20,8 @@ class UserFavoriteController extends Controller
             $favorite = new Favorite([
                 'user_id' => $request->user()->id,
                 'post_id' => $user->id,
+                'favoritable_id' => $user->id,
+                'favoritable_type' => User::class,
             ]);
             $favorite->save();
         } catch (\Exception $e) {
